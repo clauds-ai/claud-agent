@@ -1,1 +1,0 @@
-fn(String, MasterNode) -> impl Future<Output = Result<impl Reply, Rejection>> {handle_get_cluster_info}
