@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package distributed_system;
+
+message NodeInfo {
+    int32 id = 1;
+    string name = 2;
+    string position = 3;
+    string signal_metrics = 4;
+    map<string, string> metadata = 5;
+}
+
+message RaftStatus {
+    enum Status {
+        REQUEST = 0;
+        SYNC = 1;
+        RESPONSE = 2;
+        METRICS = 3;
+    }
+    Status status = 1;
+    string message = 2;
+    NodeInfo node = 3;
+}
+
+message Metrics {
+    float temperature = 1;
+    float vibration = 2;
+    float motor_status = 3;
+    float voltage = 4;
+    string timestamp = 5;
+}
+
+message ClusterInfo {
+    repeated NodeInfo nodes = 1;
+    NodeInfo master = 2;
+    string cluster_name = 3;
+}
+
+message AuthToken {
+    string token = 1;
+    int64 expires_at = 2;
+}
+
+service DistributedSystem {
+    rpc GetNodeInfo (NodeInfo) returns (NodeInfo);
+    rpc SendRaftStatus (RaftStatus) returns (RaftStatus);
+    rpc SendMetrics (Metrics) returns (Metrics);
+    rpc GetClusterInfo (AuthToken) returns (ClusterInfo);
+}

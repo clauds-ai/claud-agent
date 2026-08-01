@@ -1,0 +1,16 @@
+[Unit]
+Description=Distributed System Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/usr/local/bin
+ExecStart=/path/to/your/distributed_system_binary
+Restart=always
+RestartSec=5s
+Environment=RUST_LOG=info
+
+[Install]
+WantedBy=multi-user.target
