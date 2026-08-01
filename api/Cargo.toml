@@ -2,6 +2,10 @@
 name = "api"
 version = "0.1.0"
 edition = "2021"
+build = "build.rs"  # Tell Cargo to use the build script
+
+[build-dependencies]
+tonic-build = "0.10"  # Required for Protobuf code generation
 
 [dependencies]
 core = { path = "../core" }
