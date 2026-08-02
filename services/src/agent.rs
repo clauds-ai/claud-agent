@@ -1,5 +1,6 @@
-use distr_core::{Metrics, SystemMetrics, SystemMetricsCollector};
+use distr_core::{NodeInfo, RaftStatus, SystemMetrics, SystemMetricsCollector};
 use tokio::sync::mpsc;
+use std::time::Duration;
 
 #[derive(Debug)]
 pub struct AgentNode {
@@ -7,9 +8,8 @@ pub struct AgentNode {
     pub name: String,
     pub node_info: NodeInfo,
     pub master_tx: mpsc::Sender<RaftStatus>,
-    pub metrics_tx: mpsc::Sender<Metrics>,
-    pub system_metrics_tx: mpsc::Sender<SystemMetrics>, // Новий канал для системних метрик
-    pub metrics_collector: SystemMetricsCollector,      // Колектор метрик
+    pub system_metrics_tx: mpsc::Sender<SystemMetrics>,
+    pub metrics_collector: SystemMetricsCollector,
 }
 
 impl AgentNode {
@@ -18,18 +18,20 @@ impl AgentNode {
         name: String,
         node_info: NodeInfo,
         master_tx: mpsc::Sender<RaftStatus>,
-        metrics_tx: mpsc::Sender<Metrics>,
-        system_metrics_tx: mpsc::Sender<SystemMetrics>, // Новий параметр
+        system_metrics_tx: mpsc::Sender<SystemMetrics>,
     ) -> Self {
         Self {
             id,
             name,
             node_info,
             master_tx,
-            metrics_tx,
             system_metrics_tx,
             metrics_collector: SystemMetricsCollector::new(),
         }
+    }
+
+    pub async fn send_raft_status(&self, status: RaftStatus) -> Result<(), mpsc::error::SendError<RaftStatus>> {
+        self.master_tx.send(status).await
     }
 
     pub async fn send_system_metrics(&mut self) -> Result<(), mpsc::error::SendError<SystemMetrics>> {
