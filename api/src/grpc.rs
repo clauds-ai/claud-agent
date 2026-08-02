@@ -1,15 +1,16 @@
-use core::{ClusterInfo, Metrics, NodeInfo, RaftStatus};
-use services::MasterNode;
-use std::sync::Arc;
-use tonic::transport::Server;
-use tonic::{Request, Response, Status};
+// Declare the generated Protobuf module
+mod distributed_system; // <-- Add this line
 
-// Import the generated Protobuf module (created by the build script)
+use core::{ClusterInfo, Metrics, NodeInfo, RaftStatus};
 use distributed_system::distributed_system_server::DistributedSystem;
 use distributed_system::{
     AuthToken, ClusterInfo as ProtoClusterInfo, Metrics as ProtoMetrics, NodeInfo as ProtoNodeInfo,
     RaftStatus as ProtoRaftStatus,
 };
+use services::MasterNode;
+use std::sync::Arc;
+use tonic::transport::Server;
+use tonic::{Request, Response, Status};
 
 /// gRPC service implementation for the distributed system.
 #[derive(Debug, Default)]

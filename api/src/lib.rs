@@ -1,3 +1,6 @@
+// Declare the Protobuf-generated module
+mod distributed_system; // <-- Add this line
+
 pub mod grpc;
 pub mod rest;
 
