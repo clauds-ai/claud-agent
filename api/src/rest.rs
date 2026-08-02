@@ -22,8 +22,7 @@ pub async fn start_rest_api(master: MasterNode, auth_service: AuthService, port:
     warp::serve(routes).run(([0, 0, 0, 0], port)).await;
 }
 
-async fn handle_get_system_metrics(
-    _token: String,
+async fn handle_get_cluster_info(
     master: MasterNode,
 ) -> Result<impl Reply, Rejection> {
     let system_metrics = master.system_metrics.lock().await;

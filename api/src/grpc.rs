@@ -1,19 +1,26 @@
-// Declare the generated Protobuf module
-mod distributed_system;
-
-use distr_core::{ClusterInfo, NodeInfo, RaftStatus};
-use distributed_system::distributed_system_server::{DistributedSystem, DistributedSystemServer};
-use distributed_system::{
-    AuthToken, ClusterInfo as ProtoClusterInfo, Metrics as ProtoMetrics, NodeInfo as ProtoNodeInfo,
-    RaftStatus as ProtoRaftStatus,
-};
+use crate::distributed_system;
+use crate::distributed_system::distributed_system_server::{DistributedSystem, DistributedSystemServer};
+use distr_core::{NodeInfo, RaftStatus};
 use services::MasterNode;
 use std::sync::Arc;
 use tonic::transport::Server;
 use tonic::{Request, Response, Status};
 
+// Реалізація конвертації з distr_core::NodeInfo в ProtoNodeInfo
+impl From<distr_core::NodeInfo> for ProtoNodeInfo {
+    fn from(node: distr_core::NodeInfo) -> Self {
+        ProtoNodeInfo {
+            id: node.id,
+            name: node.name,
+            position: node.position,
+            signal_metrics: node.signal_metrics,
+            metadata: node.metadata,
+        }
+    }
+}
+
 /// gRPC service implementation for the distributed system.
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct GrpcService {
     pub master: Arc<MasterNode>,
 }
