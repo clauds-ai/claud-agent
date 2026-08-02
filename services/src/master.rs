@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MasterNode {
     pub id: i32,
     pub name: String,

@@ -22,7 +22,6 @@ fn with_master(
 }
 
 async fn handle_get_cluster_info(
-    _token: String,
     master: MasterNode,
 ) -> Result<impl Reply, Rejection> {
     let nodes = master.nodes.lock().await;

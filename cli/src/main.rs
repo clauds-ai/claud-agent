@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand};
 use reqwest::Client;
-use serde_json::json;
+use serde_json::Value;
 
 #[derive(Parser)]
 #[command(name = "cluster-cli")]
@@ -29,7 +29,7 @@ async fn main() {
                 .send()
                 .await
                 .unwrap();
-            let cluster_info: serde_json::Value = response.json().await.unwrap();
+            let cluster_info: Value = response.json().await.unwrap();
             println!("{:#?}", cluster_info);
         }
     }
