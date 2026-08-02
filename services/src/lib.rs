@@ -39,7 +39,7 @@ mod tests {
             mpsc::channel(10).0,
         );
         let status = RaftStatus::new(
-            core::raft::RaftStatusEnum::Request,
+            distr_core::raft::RaftStatusEnum::Request,
             "test".to_string(),
             NodeInfo::new(
                 1,

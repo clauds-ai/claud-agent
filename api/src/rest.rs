@@ -1,4 +1,4 @@
-use core::{ClusterInfo, Metrics, NodeInfo};
+use distr_core::{ClusterInfo, Metrics, NodeInfo};
 use infrastructure::AuthService;
 use services::MasterNode;
 use std::convert::Infallible;

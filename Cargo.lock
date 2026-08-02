@@ -80,7 +80,7 @@ checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 name = "api"
 version = "0.1.0"
 dependencies = [
- "core",
+ "distr_core",
  "infrastructure",
  "prost",
  "serde",
@@ -303,7 +303,7 @@ version = "0.1.0"
 dependencies = [
  "api",
  "clap",
- "core",
+ "distr_core",
  "reqwest",
  "serde",
  "serde_json",
@@ -315,16 +315,6 @@ name = "colorchoice"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d07550c9036bf2ae0c684c4297d503f838287c83c53686d05370d0e139ae570"
-
-[[package]]
-name = "core"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "serde",
- "serde_json",
- "thiserror 1.0.69",
-]
 
 [[package]]
 name = "core-foundation"
@@ -402,6 +392,16 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.3",
+]
+
+[[package]]
+name = "distr_core"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -1674,7 +1674,7 @@ dependencies = [
 name = "services"
 version = "0.1.0"
 dependencies = [
- "core",
+ "distr_core",
  "log",
  "prost",
  "serde",

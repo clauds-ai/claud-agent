@@ -24,7 +24,7 @@ pub struct RaftStatus {
     #[prost(string, tag = "2")]
     pub message: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "3")]
-    pub node: std::option::Option<NodeInfo>,
+    pub node: ::core::option::Option<NodeInfo>,
 }
 /// Nested message and enum types in `RaftStatus`.
 pub mod raft_status {
@@ -60,7 +60,7 @@ pub mod raft_status {
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> std::option::Option<Self> {
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "REQUEST" => Some(Self::Request),
                 "SYNC" => Some(Self::Sync),
@@ -91,7 +91,7 @@ pub struct ClusterInfo {
     #[prost(message, repeated, tag = "1")]
     pub nodes: ::prost::alloc::vec::Vec<NodeInfo>,
     #[prost(message, optional, tag = "2")]
-    pub master: std::option::Option<NodeInfo>,
+    pub master: ::core::option::Option<NodeInfo>,
     #[prost(string, tag = "3")]
     pub cluster_name: ::prost::alloc::string::String,
 }

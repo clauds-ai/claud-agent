@@ -1,4 +1,4 @@
-use core::{Metrics, NodeInfo, RaftStatus};
+use distr_core::{Metrics, NodeInfo, RaftStatus};
 use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::Mutex;

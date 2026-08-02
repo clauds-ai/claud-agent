@@ -8,7 +8,7 @@ build = "build.rs"  # Tell Cargo to use the build script
 tonic-build = "0.10"  # Required for Protobuf code generation
 
 [dependencies]
-core = { path = "../core" }
+distr_core = { path = "../distr_core" }
 services = { path = "../services" }
 infrastructure = { path = "../infrastructure" }
 tokio = { version = "1.0", features = ["full"] }

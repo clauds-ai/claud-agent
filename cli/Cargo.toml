@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-core = { path = "../core" }
+distr_core = { path = "../distr_core" }
 api = { path = "../api" }
 tokio = { version = "1.0", features = ["full"] }
 reqwest = "0.11"

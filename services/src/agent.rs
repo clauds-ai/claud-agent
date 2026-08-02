@@ -1,4 +1,4 @@
-use core::{Metrics, NodeInfo, RaftStatus};
+use distr_core::{Metrics, NodeInfo, RaftStatus};
 use tokio::sync::mpsc;
 
 #[derive(Debug)]

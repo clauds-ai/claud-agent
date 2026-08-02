@@ -1,7 +1,7 @@
 // Declare the generated Protobuf module
 mod distributed_system; // <-- Add this line
 
-use core::{ClusterInfo, Metrics, NodeInfo, RaftStatus};
+use distr_core::{ClusterInfo, Metrics, NodeInfo, RaftStatus};
 use distributed_system::distributed_system_server::DistributedSystem;
 use distributed_system::{
     AuthToken, ClusterInfo as ProtoClusterInfo, Metrics as ProtoMetrics, NodeInfo as ProtoNodeInfo,
