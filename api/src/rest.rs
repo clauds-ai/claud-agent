@@ -1,4 +1,4 @@
-use distr_core::{ClusterInfo, Metrics, NodeInfo};
+use distr_core::{ClusterInfo, NodeInfo, SystemMetrics};
 use infrastructure::AuthService;
 use services::MasterNode;
 use std::convert::Infallible;
@@ -11,29 +11,21 @@ pub async fn start_rest_api(master: MasterNode, auth_service: AuthService, port:
         .and(with_master(master.clone()))
         .and_then(handle_get_cluster_info);
 
-    let routes = get_cluster_info;
-    warp::serve(routes).run(([0, 0, 0, 0], port)).await;
-}
+    // Новий ендпоінт для системних метрик
+    let get_system_metrics = warp::path!("system" / "metrics")
+        .and(warp::get())
+        .and(warp::header::exact("Authorization", "Bearer valid_token"))
+        .and(with_master(master.clone()))
+        .and_then(handle_get_system_metrics);
 
-fn with_master(
-    master: MasterNode,
-) -> impl Filter<Extract = (MasterNode,), Error = Infallible> + Clone {
-    warp::any().map(move || master.clone())
+    let routes = get_cluster_info.or(get_system_metrics);
+    warp::serve(routes).run(([0, 0, 0, 0], port)).await;
 }
 
 async fn handle_get_cluster_info(
     master: MasterNode,
 ) -> Result<impl Reply, Rejection> {
-    let nodes = master.nodes.lock().await;
-    let cluster_info = ClusterInfo {
-        nodes: nodes.values().cloned().collect(),
-        master: NodeInfo::new(
-            master.id,
-            master.name.clone(),
-            "master".to_string(),
-            "".to_string(),
-        ),
-        cluster_name: "distributed_system".to_string(),
-    };
-    Ok(warp::reply::json(&cluster_info))
+    let system_metrics = master.system_metrics.lock().await;
+    let metrics: Vec<_> = system_metrics.values().cloned().collect();
+    Ok(warp::reply::json(&metrics))
 }

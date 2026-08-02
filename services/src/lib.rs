@@ -8,6 +8,8 @@ pub use master::MasterNode;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use distr_core::{NodeInfo, RaftStatus};
+    use distr_core::raft::RaftStatusEnum;
     use tokio::sync::mpsc;
 
     #[tokio::test]
@@ -36,10 +38,9 @@ mod tests {
                 "test".to_string(),
             ),
             tx,
-            mpsc::channel(10).0,
         );
         let status = RaftStatus::new(
-            distr_core::raft::RaftStatusEnum::Request,
+            RaftStatusEnum::Request,
             "test".to_string(),
             NodeInfo::new(
                 1,

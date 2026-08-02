@@ -1,10 +1,6 @@
 use crate::distributed_system;
 use crate::distributed_system::distributed_system_server::{DistributedSystem, DistributedSystemServer};
 use distr_core::{NodeInfo, RaftStatus};
-use distributed_system::{
-    AuthToken, ClusterInfo as ProtoClusterInfo, Metrics as ProtoMetrics, NodeInfo as ProtoNodeInfo,
-    RaftStatus as ProtoRaftStatus,
-};
 use services::MasterNode;
 use std::sync::Arc;
 use tonic::transport::Server;
