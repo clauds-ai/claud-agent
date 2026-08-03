@@ -1,15 +1,16 @@
 use crate::distributed_system;
-use crate::distributed_system::distributed_system_server::{DistributedSystem, DistributedSystemServer};
+use crate::distributed_system::distributed_system_server::{
+    DistributedSystem, DistributedSystemServer,
+};
 use distr_core::{NodeInfo, RaftStatus};
 use services::MasterNode;
 use std::sync::Arc;
 use tonic::transport::Server;
 use tonic::{Request, Response, Status};
 
-// Реалізація конвертації з distr_core::NodeInfo в ProtoNodeInfo
-impl From<distr_core::NodeInfo> for ProtoNodeInfo {
+impl From<distr_core::NodeInfo> for NodeInfo {
     fn from(node: distr_core::NodeInfo) -> Self {
-        ProtoNodeInfo {
+        NodeInfo {
             id: node.id,
             name: node.name,
             position: node.position,
@@ -29,29 +30,26 @@ pub struct GrpcService {
 impl DistributedSystem for GrpcService {
     async fn get_node_info(
         &self,
-        request: Request<ProtoNodeInfo>,
-    ) -> Result<Response<ProtoNodeInfo>, Status> {
+        request: Request<NodeInfo>,
+    ) -> Result<Response<NodeInfo>, Status> {
         Ok(Response::new(request.into_inner()))
     }
 
     async fn send_raft_status(
         &self,
-        request: Request<ProtoRaftStatus>,
-    ) -> Result<Response<ProtoRaftStatus>, Status> {
+        request: Request<RaftStatus>,
+    ) -> Result<Response<RaftStatus>, Status> {
         Ok(Response::new(request.into_inner()))
     }
 
-    async fn send_metrics(
-        &self,
-        request: Request<ProtoMetrics>,
-    ) -> Result<Response<ProtoMetrics>, Status> {
+    async fn send_metrics(&self, request: Request<Metrics>) -> Result<Response<Metrics>, Status> {
         Ok(Response::new(request.into_inner()))
     }
 
     async fn get_cluster_info(
         &self,
         _request: Request<AuthToken>,
-    ) -> Result<Response<ProtoClusterInfo>, Status> {
+    ) -> Result<Response<ClusterInfo>, Status> {
         let nodes = self.master.nodes.lock().await;
         let master_node = NodeInfo::new(
             self.master.id,
@@ -60,10 +58,10 @@ impl DistributedSystem for GrpcService {
             "".to_string(),
         );
 
-        let cluster_info = ProtoClusterInfo {
+        let cluster_info = ClusterInfo {
             nodes: nodes
                 .values()
-                .map(|node| ProtoNodeInfo {
+                .map(|node| NodeInfo {
                     id: node.id,
                     name: node.name.clone(),
                     position: node.position.clone(),
