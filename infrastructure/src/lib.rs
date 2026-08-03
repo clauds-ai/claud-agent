@@ -1,7 +1,7 @@
 pub mod auth;
 pub mod dns;
 
-pub use auth::{AuthService, Claims, TokenError};
+pub use auth::{AuthToken, Claims, TokenError};
 pub use dns::DnsResolver;
 
 #[cfg(test)]
@@ -11,7 +11,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_auth_service() {
-        let auth = AuthService::new("test_secret");
+        let auth = AuthToken::new("test_secret");
         let token = auth
             .create_token("test_subject", Duration::hours(1))
             .unwrap();

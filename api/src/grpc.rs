@@ -2,23 +2,13 @@ use crate::distributed_system;
 use crate::distributed_system::distributed_system_server::{
     DistributedSystem, DistributedSystemServer,
 };
-use distr_core::{NodeInfo, RaftStatus, SystemMetrics};
+use distr_core::ClusterInfo;
+use distr_core::{RaftStatus, SystemMetrics};
+use infrastructure::AuthToken;
 use services::MasterNode;
 use std::sync::Arc;
 use tonic::transport::Server;
 use tonic::{Request, Response, Status};
-
-impl From<distr_core::NodeInfo> for NodeInfo {
-    fn from(node: distr_core::NodeInfo) -> Self {
-        NodeInfo {
-            id: node.id,
-            name: node.name,
-            position: node.position,
-            signal_metrics: node.signal_metrics,
-            metadata: node.metadata,
-        }
-    }
-}
 
 /// gRPC service implementation for the distributed system.
 #[derive(Debug)]

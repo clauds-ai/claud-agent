@@ -29,11 +29,11 @@ pub struct Claims {
     pub exp: i64,
 }
 
-pub struct AuthService {
+pub struct AuthToken {
     pub secret: Vec<u8>,
 }
 
-impl AuthService {
+impl AuthToken {
     pub fn new(secret: &str) -> Self {
         Self {
             secret: secret.as_bytes().to_vec(),
