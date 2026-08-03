@@ -2,7 +2,7 @@ use crate::distributed_system;
 use crate::distributed_system::distributed_system_server::{
     DistributedSystem, DistributedSystemServer,
 };
-use distr_core::{NodeInfo, RaftStatus};
+use distr_core::{NodeInfo, RaftStatus, SystemMetrics};
 use services::MasterNode;
 use std::sync::Arc;
 use tonic::transport::Server;
@@ -42,7 +42,10 @@ impl DistributedSystem for GrpcService {
         Ok(Response::new(request.into_inner()))
     }
 
-    async fn send_metrics(&self, request: Request<Metrics>) -> Result<Response<Metrics>, Status> {
+    async fn send_metrics(
+        &self,
+        request: Request<SystemMetrics>,
+    ) -> Result<Response<SystemMetrics>, Status> {
         Ok(Response::new(request.into_inner()))
     }
 
