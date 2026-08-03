@@ -11,7 +11,6 @@ pub async fn start_rest_api(master: MasterNode, auth_service: AuthService, port:
         .and(with_master(master.clone()))
         .and_then(handle_get_cluster_info);
 
-    // Новий ендпоінт для системних метрик
     let get_system_metrics = warp::path!("system" / "metrics")
         .and(warp::get())
         .and(warp::header::exact("Authorization", "Bearer valid_token"))
@@ -22,9 +21,7 @@ pub async fn start_rest_api(master: MasterNode, auth_service: AuthService, port:
     warp::serve(routes).run(([0, 0, 0, 0], port)).await;
 }
 
-async fn handle_get_cluster_info(
-    master: MasterNode,
-) -> Result<impl Reply, Rejection> {
+async fn handle_get_cluster_info(master: MasterNode) -> Result<impl Reply, Rejection> {
     let system_metrics = master.system_metrics.lock().await;
     let metrics: Vec<_> = system_metrics.values().cloned().collect();
     Ok(warp::reply::json(&metrics))

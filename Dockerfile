@@ -2,11 +2,13 @@
 # Multi-stage build for optimized production image
 
 # Build stage
-FROM rust:1.75-slim AS builder
+FROM rust:1.94-slim AS builder
 
 # Install protobuf compiler
 RUN apt-get update && apt-get install -y --no-install-recommends \
     protobuf-compiler \
+    libssl-dev \
+    pkg-config\
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -15,6 +17,7 @@ WORKDIR /usr/src/claud-agent
 # Copy all source files
 COPY . .
 
+RUN export OPENSSL_DIR=/usr/lib/ssl
 # Build the project in release mode
 RUN cargo build --release
 
@@ -24,9 +27,12 @@ FROM debian:12-slim
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl3 \
+    protobuf-compiler \
     ca-certificates \
+    libssl-dev \
     && rm -rf /var/lib/apt/lists/*
-
+RUN export OPENSSL_DIR=/usr/lib/ssl
+#RUN openssl version -d
 # Copy binary from builder
 COPY --from=builder /usr/src/claud-agent/target/release/claud-agent /usr/local/bin/claud-agent
 
